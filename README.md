@@ -29,7 +29,7 @@ Example 1:
 {
   "blockchain_id": 47,
   "block_number": 3916102,
-  "event_name": "BarEvent"
+  "event_name": "BarEvent",
   "fields": [
     {
       "type": "number",
@@ -66,3 +66,9 @@ postgresql for storing our data.
 Here we are illustrating the high-level-diagram of the system
 
 ![Alt text](./doc-file/test.svg)
+
+### database schema
+Here is the design of the database schema. dbdiagram.io was used to build the diagram.
+
+![Alt text](./doc-file/db-digram.png)
+
