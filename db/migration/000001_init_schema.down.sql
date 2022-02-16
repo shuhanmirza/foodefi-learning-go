@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS "event_fields";
+DROP TABLE IF EXISTS "events";
+DROP TABLE IF EXISTS "blockchains";
+DROP TABLE IF EXISTS "users";
+

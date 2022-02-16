@@ -75,6 +75,10 @@ Here is the design of the database schema. I used dbdiagram.io to build the diag
 For better view go to this [link](https://dbdiagram.io/d/620b828085022f4ee597fc93).
 
 ## Getting Started
+Have installed:
+- golang
+- docker and docker-compose
+- golang migrate
 
 ## Utility Commands
 So that, I do not have to search google for commands every time :p
@@ -83,4 +87,9 @@ So that, I do not have to search google for commands every time :p
 docker exec -it postgres14 psql -U root
 docker logs postgres14
 ```
-
+```shell
+brew install golang-migrate
+migrate create -ext sql -dir db/migration -seq init_schema
+migrate -path db/migration -database "postgresql://root:secret@localhost:5432/fd-db?sslmode=disable" -verbose up  
+migrate -path db/migration -database "postgresql://root:secret@localhost:5432/fd-db?sslmode=disable" -verbose down
+```
