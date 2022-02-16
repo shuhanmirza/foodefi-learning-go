@@ -58,17 +58,29 @@ As a Backend Developer at FooDeFi, you are given the following requirements:
 
 
 ## Architecture
-To implement the story, we are developing the system using golang.
+To implement the story, I am developing the system using golang.
 The system will have two microservices, namely `fd-event-listener` and `fd-auth`.
-Both the microservice will interact with the same database named `fd-db`. We will be using
-postgresql for storing our data.
+Both the microservice will interact with the same database named `fd-db`. I will be using
+postgresql for storing the data.
 
-Here we are illustrating the high-level-diagram of the system
+Here I am illustrating the high-level-diagram of the system
 
 ![Alt text](./doc-file/test.svg)
 
 ### database schema
-Here is the design of the database schema. dbdiagram.io was used to build the diagram.
+Here is the design of the database schema. I used dbdiagram.io to build the diagram.
 
 ![Alt text](./doc-file/db-digram.png)
+
+For better view go to this [link](https://dbdiagram.io/d/620b828085022f4ee597fc93).
+
+## Getting Started
+
+## Utility Commands
+So that, I do not have to search google for commands every time :p
+
+```shell
+docker exec -it postgres14 psql -U root
+docker logs postgres14
+```
 
