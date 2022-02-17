@@ -78,7 +78,8 @@ For better view go to this [link](https://dbdiagram.io/d/620b828085022f4ee597fc9
 Have installed:
 - golang
 - docker and docker-compose
-- golang migrate
+- golang-migrate
+- sqlc
 
 ## Utility Commands
 So that, I do not have to search google for commands every time :p
@@ -92,4 +93,9 @@ brew install golang-migrate
 migrate create -ext sql -dir db/migration -seq init_schema
 migrate -path db/migration -database "postgresql://root:secret@localhost:5432/fd-db?sslmode=disable" -verbose up  
 migrate -path db/migration -database "postgresql://root:secret@localhost:5432/fd-db?sslmode=disable" -verbose down
+```
+```shell
+brew install sqlc
+sqlc init
+sqlc generate
 ```
