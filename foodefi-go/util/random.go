@@ -40,3 +40,7 @@ func RandomRole() string {
 func RandomBlockchainName() string {
 	return RandomStringAlphabet(6)
 }
+
+func RandomEventName() string {
+	return RandomStringAlphabet(6)
+}
