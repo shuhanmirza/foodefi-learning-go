@@ -1,7 +1,9 @@
 package util
 
 import (
+	"errors"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -33,7 +35,7 @@ func RandomUserName() string {
 }
 
 func RandomRole() string {
-	roles := []string{"admin", "scraper"}
+	roles := GetAllRoles()
 	return roles[rand.Intn(len(roles))]
 }
 
@@ -43,4 +45,25 @@ func RandomBlockchainName() string {
 
 func RandomEventName() string {
 	return RandomStringAlphabet(6)
+}
+
+func RandomEventFieldName() string {
+	return RandomStringAlphabet(4)
+}
+
+func RandomEvenFieldType() string {
+	allEventFieldTypes := GetAllEventFieldTypes()
+	return allEventFieldTypes[rand.Intn(len(allEventFieldTypes))]
+}
+
+func RandomEventFieldValue(eventFieldType string) (string, error) {
+	switch eventFieldType {
+	case EventFieldString:
+		return RandomStringAlphabet(10), nil
+	case EventFieldNumber:
+		return strconv.Itoa(int(RandomInt(100, 200))), nil
+	case EventFieldBoolean:
+		return strconv.Itoa(rand.Intn(2)), nil // zero or one
+	}
+	return "", errors.New("unknown event field type")
 }
