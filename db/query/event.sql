@@ -5,10 +5,18 @@ INSERT INTO events (blockchain_id,
 VALUES ($1, $2, $3)
 RETURNING *;
 
--- name: GetEvent :one
+-- name: GetEventById :one
 SELECT *
 from events
 WHERE id = $1
+LIMIT 1;
+
+-- name: GetEventByAllData :one
+SELECT *
+from events
+WHERE blockchain_id = $1
+  and block_number = $2
+  and event_name = $3
 LIMIT 1;
 
 -- name: ListEvents :many

@@ -44,15 +44,42 @@ func (q *Queries) DeleteEvent(ctx context.Context, id int64) error {
 	return err
 }
 
-const getEvent = `-- name: GetEvent :one
+const getEventByAllData = `-- name: GetEventByAllData :one
+SELECT id, blockchain_id, block_number, event_name
+from events
+WHERE blockchain_id = $1
+  and block_number = $2
+  and event_name = $3
+LIMIT 1
+`
+
+type GetEventByAllDataParams struct {
+	BlockchainID int64  `json:"blockchain_id"`
+	BlockNumber  int64  `json:"block_number"`
+	EventName    string `json:"event_name"`
+}
+
+func (q *Queries) GetEventByAllData(ctx context.Context, arg GetEventByAllDataParams) (Events, error) {
+	row := q.db.QueryRowContext(ctx, getEventByAllData, arg.BlockchainID, arg.BlockNumber, arg.EventName)
+	var i Events
+	err := row.Scan(
+		&i.ID,
+		&i.BlockchainID,
+		&i.BlockNumber,
+		&i.EventName,
+	)
+	return i, err
+}
+
+const getEventById = `-- name: GetEventById :one
 SELECT id, blockchain_id, block_number, event_name
 from events
 WHERE id = $1
 LIMIT 1
 `
 
-func (q *Queries) GetEvent(ctx context.Context, id int64) (Events, error) {
-	row := q.db.QueryRowContext(ctx, getEvent, id)
+func (q *Queries) GetEventById(ctx context.Context, id int64) (Events, error) {
+	row := q.db.QueryRowContext(ctx, getEventById, id)
 	var i Events
 	err := row.Scan(
 		&i.ID,

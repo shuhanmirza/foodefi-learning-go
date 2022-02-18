@@ -43,8 +43,10 @@ ALTER TABLE "event_fields"
 
 CREATE INDEX ON "users" ("role");
 
-CREATE INDEX ON "events" ("blockchain_id", "block_number");
+CREATE UNIQUE INDEX ON "events" ("blockchain_id", "block_number", "event_name");
 
 CREATE INDEX ON "event_fields" ("recorder");
 
 CREATE INDEX ON "event_fields" ("event_id");
+
+CREATE UNIQUE INDEX ON "event_fields" ("event_id", "name");
