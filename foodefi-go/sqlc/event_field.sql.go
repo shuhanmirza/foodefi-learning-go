@@ -5,7 +5,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createEventField = `-- name: CreateEventField :one
@@ -19,11 +18,11 @@ RETURNING id, event_id, name, type, value, recorder, created_at
 `
 
 type CreateEventFieldParams struct {
-	EventID  sql.NullInt64 `json:"event_id"`
-	Name     string        `json:"name"`
-	Type     string        `json:"type"`
-	Value    string        `json:"value"`
-	Recorder string        `json:"recorder"`
+	EventID  int64  `json:"event_id"`
+	Name     string `json:"name"`
+	Type     string `json:"type"`
+	Value    string `json:"value"`
+	Recorder string `json:"recorder"`
 }
 
 func (q *Queries) CreateEventField(ctx context.Context, arg CreateEventFieldParams) (EventFields, error) {

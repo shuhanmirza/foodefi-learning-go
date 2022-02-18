@@ -5,22 +5,16 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createBlockchain = `-- name: CreateBlockchain :one
-INSERT INTO blockchains (id, name)
-VALUES ($1, $2)
+INSERT INTO blockchains (name)
+VALUES ($1)
 RETURNING id, name, created_at
 `
 
-type CreateBlockchainParams struct {
-	ID   int64          `json:"id"`
-	Name sql.NullString `json:"name"`
-}
-
-func (q *Queries) CreateBlockchain(ctx context.Context, arg CreateBlockchainParams) (Blockchains, error) {
-	row := q.db.QueryRowContext(ctx, createBlockchain, arg.ID, arg.Name)
+func (q *Queries) CreateBlockchain(ctx context.Context, name string) (Blockchains, error) {
+	row := q.db.QueryRowContext(ctx, createBlockchain, name)
 	var i Blockchains
 	err := row.Scan(&i.ID, &i.Name, &i.CreatedAt)
 	return i, err
@@ -88,8 +82,8 @@ RETURNING id, name, created_at
 `
 
 type UpdateBlockchainParams struct {
-	ID   int64          `json:"id"`
-	Name sql.NullString `json:"name"`
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
 }
 
 func (q *Queries) UpdateBlockchain(ctx context.Context, arg UpdateBlockchainParams) error {

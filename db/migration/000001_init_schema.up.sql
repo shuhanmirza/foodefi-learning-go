@@ -8,15 +8,15 @@ CREATE TABLE "users"
 
 CREATE TABLE "blockchains"
 (
-    "id"         bigint PRIMARY KEY,
-    "name"       varchar,
-    "created_at" timestamptz DEFAULT (now())
+    "id"         bigserial PRIMARY KEY,
+    "name"       varchar     NOT NULL,
+    "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "events"
 (
     "id"            bigserial PRIMARY KEY,
-    "blockchain_id" bigint,
+    "blockchain_id" bigint  NOT NULL,
     "block_number"  bigint  NOT NULL,
     "event_name"    varchar NOT NULL
 );
@@ -24,12 +24,12 @@ CREATE TABLE "events"
 CREATE TABLE "event_fields"
 (
     "id"         bigserial PRIMARY KEY,
-    "event_id"   bigint,
-    "name"       varchar NOT NULL,
-    "type"       varchar NOT NULL,
-    "value"      varchar NOT NULL,
-    "recorder"   varchar NOT NULL,
-    "created_at" timestamptz DEFAULT (now())
+    "event_id"   bigint      NOT NULL,
+    "name"       varchar     NOT NULL,
+    "type"       varchar     NOT NULL,
+    "value"      varchar     NOT NULL,
+    "recorder"   varchar     NOT NULL,
+    "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 ALTER TABLE "events"

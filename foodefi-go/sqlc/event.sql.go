@@ -5,7 +5,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createEvent = `-- name: CreateEvent :one
@@ -17,9 +16,9 @@ RETURNING id, blockchain_id, block_number, event_name
 `
 
 type CreateEventParams struct {
-	BlockchainID sql.NullInt64 `json:"blockchain_id"`
-	BlockNumber  int64         `json:"block_number"`
-	EventName    string        `json:"event_name"`
+	BlockchainID int64  `json:"blockchain_id"`
+	BlockNumber  int64  `json:"block_number"`
+	EventName    string `json:"event_name"`
 }
 
 func (q *Queries) CreateEvent(ctx context.Context, arg CreateEventParams) (Events, error) {

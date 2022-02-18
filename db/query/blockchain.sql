@@ -1,6 +1,6 @@
 -- name: CreateBlockchain :one
-INSERT INTO blockchains (id, name)
-VALUES ($1, $2)
+INSERT INTO blockchains (name)
+VALUES ($1)
 RETURNING *;
 
 -- name: GetBlockchain :one

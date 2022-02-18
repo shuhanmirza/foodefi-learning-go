@@ -36,3 +36,7 @@ func RandomRole() string {
 	roles := []string{"admin", "scraper"}
 	return roles[rand.Intn(len(roles))]
 }
+
+func RandomBlockchainName() string {
+	return RandomStringAlphabet(6)
+}

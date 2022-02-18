@@ -3,31 +3,30 @@
 package db
 
 import (
-	"database/sql"
 	"time"
 )
 
 type Blockchains struct {
-	ID        int64          `json:"id"`
-	Name      sql.NullString `json:"name"`
-	CreatedAt sql.NullTime   `json:"created_at"`
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type EventFields struct {
-	ID        int64         `json:"id"`
-	EventID   sql.NullInt64 `json:"event_id"`
-	Name      string        `json:"name"`
-	Type      string        `json:"type"`
-	Value     string        `json:"value"`
-	Recorder  string        `json:"recorder"`
-	CreatedAt sql.NullTime  `json:"created_at"`
+	ID        int64     `json:"id"`
+	EventID   int64     `json:"event_id"`
+	Name      string    `json:"name"`
+	Type      string    `json:"type"`
+	Value     string    `json:"value"`
+	Recorder  string    `json:"recorder"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type Events struct {
-	ID           int64         `json:"id"`
-	BlockchainID sql.NullInt64 `json:"blockchain_id"`
-	BlockNumber  int64         `json:"block_number"`
-	EventName    string        `json:"event_name"`
+	ID           int64  `json:"id"`
+	BlockchainID int64  `json:"blockchain_id"`
+	BlockNumber  int64  `json:"block_number"`
+	EventName    string `json:"event_name"`
 }
 
 type Users struct {
