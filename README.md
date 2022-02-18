@@ -43,7 +43,6 @@ Example 1:
     }
   ]
 }
-
 ```
 
 As a Backend Developer at FooDeFi, you are given the following requirements:
@@ -98,4 +97,7 @@ migrate -path db/migration -database "postgresql://root:secret@localhost:5432/fd
 brew install sqlc
 sqlc init
 sqlc generate
+```
+```shell
+go test -v -cover ./...
 ```
