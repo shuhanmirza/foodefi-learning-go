@@ -8,17 +8,22 @@ import (
 )
 
 func createRandomEventField(t *testing.T) EventFields {
+	event := createRandomEvent(t)
 
 	eventFieldType := util.RandomEvenFieldType()
 	eventFieldValue, _ := util.RandomEventFieldValue(eventFieldType)
-	users, _ := testQueries.ListUsers(context.Background())
+	users, _ := testQueries.ListUsersFilterRole(context.Background(), util.UserRoleScraper)
 
+	for len(users) == 0 {
+		createRandomUser(t)
+		users, _ = testQueries.ListUsersFilterRole(context.Background(), util.UserRoleScraper)
+	}
 	arg := CreateEventFieldParams{
-		EventID:  util.RandomInt(1, 10),
+		EventID:  event.ID,
 		Name:     util.RandomEventFieldName(),
 		Type:     eventFieldType,
 		Value:    eventFieldValue,
-		Recorder: users[util.RandomInt(0, int64(len(users)))-1].Username, //TODO: clean
+		Recorder: users[util.RandomInt(0, int64(len(users)-1))].Username, //TODO: clean
 	}
 
 	eventField, err := testQueries.CreateEventField(context.Background(), arg)

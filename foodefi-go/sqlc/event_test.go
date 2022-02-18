@@ -29,9 +29,11 @@ func createTestEvent(t *testing.T) Events {
 
 func createRandomEvent(t *testing.T) Events {
 
+	blockchain := createRandomBlockchain(t)
+
 	arg := CreateEventParams{
 		EventName:    util.RandomEventName(),
-		BlockchainID: util.RandomInt(0, 4),
+		BlockchainID: blockchain.ID,
 		BlockNumber:  util.RandomInt(0, 10000),
 	}
 

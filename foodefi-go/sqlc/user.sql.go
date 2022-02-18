@@ -97,6 +97,41 @@ func (q *Queries) ListUsers(ctx context.Context) ([]Users, error) {
 	return items, nil
 }
 
+const listUsersFilterRole = `-- name: ListUsersFilterRole :many
+SELECT username, password, role, created_at
+FROM users
+WHERE role = $1
+ORDER BY username
+`
+
+func (q *Queries) ListUsersFilterRole(ctx context.Context, role string) ([]Users, error) {
+	rows, err := q.db.QueryContext(ctx, listUsersFilterRole, role)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Users
+	for rows.Next() {
+		var i Users
+		if err := rows.Scan(
+			&i.Username,
+			&i.Password,
+			&i.Role,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updateUserPassword = `-- name: UpdateUserPassword :exec
 UPDATE users
 SET password = $2

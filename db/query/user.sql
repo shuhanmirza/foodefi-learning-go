@@ -16,6 +16,12 @@ SELECT *
 FROM users
 ORDER BY username;
 
+-- name: ListUsersFilterRole :many
+SELECT *
+FROM users
+WHERE role = $1
+ORDER BY username;
+
 -- name: DeleteUser :exec
 DELETE
 FROM users
