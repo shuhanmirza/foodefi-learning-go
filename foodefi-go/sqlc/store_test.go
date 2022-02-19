@@ -29,25 +29,25 @@ func TestSubmitEventTx(t *testing.T) {
 				eventFieldValue, _ := util.RandomEventFieldValue(eventFieldType)
 
 				eventField := EventFieldTx{
-					fieldType:  eventFieldType,
-					fieldName:  eventFieldName,
-					fieldValue: eventFieldValue,
+					Type:  eventFieldType,
+					Name:  eventFieldName,
+					Value: eventFieldValue,
 				}
 				eventFieldList = append(eventFieldList, eventField)
 			}
 
 			result, err := store.SubmitEventTx(context.Background(), SubmitEventsTxParams{
-				blockchainId: event.BlockchainID,
-				blockNumber:  event.BlockNumber,
-				eventName:    event.EventName,
-				recorder:     users[util.RandomInt(0, int64(len(users)-1))].Username,
-				fields:       eventFieldList,
+				BlockchainId: event.BlockchainID,
+				BlockNumber:  event.BlockNumber,
+				EventName:    event.EventName,
+				Recorder:     users[util.RandomInt(0, int64(len(users)-1))].Username,
+				Fields:       eventFieldList,
 			})
 
 			require.NoError(t, err)
 			require.NotEmpty(t, result)
 
-			for _, resultEventField := range result.eventFields {
+			for _, resultEventField := range result.EventFields {
 				eventField, _ := testQueries.GetEventFieldById(context.Background(), resultEventField.EventID)
 				require.NotEmpty(t, eventField)
 			}

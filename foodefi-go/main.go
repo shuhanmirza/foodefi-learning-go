@@ -3,11 +3,13 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"foodefi-go/fd-auth"
+	fd_auth "foodefi-go/fd-auth"
+	fd_event_listener "foodefi-go/fd-event-listener"
 	db "foodefi-go/sqlc"
 	"foodefi-go/util"
 	_ "github.com/lib/pq"
 	"log"
+	"sync"
 )
 
 func main() {
@@ -24,9 +26,30 @@ func main() {
 	}
 	store := db.NewStore(conn)
 
-	fdAuthServer := fd_auth.NewServer(store)
-	err = fdAuthServer.Start(globalConfig.FdAuthServerAddress)
-	if err != nil {
-		log.Fatal("can not start the fdAuthServer", err)
-	}
+	// TODO: restructure these servers to run as separate microservices
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+
+		fdAuthServer := fd_auth.NewServer(store)
+		err = fdAuthServer.Start(globalConfig.FdAuthServerAddress)
+		if err != nil {
+			log.Fatal("can not start the fdAuthServer", err)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		fdEventListener := fd_event_listener.NewServer(store)
+		err = fdEventListener.Start(globalConfig.FdEventListenerAddress)
+		if err != nil {
+			log.Fatal("can not start the fdEventListener", err)
+		}
+	}()
+
+	wg.Wait()
+
 }

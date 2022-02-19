@@ -2,8 +2,8 @@ package util
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -16,6 +16,13 @@ func init() {
 
 func RandomInt(min, max int64) int64 {
 	return min + rand.Int63n(max-min+1)
+}
+
+func RandomBool() bool {
+	if rand.Intn(2) == 0 {
+		return false
+	}
+	return true
 }
 
 func RandomStringAlphabet(n int) string {
@@ -61,9 +68,9 @@ func RandomEventFieldValue(eventFieldType string) (string, error) {
 	case EventFieldString:
 		return RandomStringAlphabet(10), nil
 	case EventFieldNumber:
-		return strconv.Itoa(int(RandomInt(100, 200))), nil
+		return fmt.Sprintf("%g", rand.Float64()), nil
 	case EventFieldBoolean:
-		return strconv.Itoa(rand.Intn(2)), nil // zero or one
+		return fmt.Sprintf("%t", RandomBool()), nil // zero or one
 	}
 	return "", errors.New("unknown event field type")
 }

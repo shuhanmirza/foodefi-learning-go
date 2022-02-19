@@ -42,30 +42,29 @@ func (store *Store) execTx(ctx context.Context, fn func(queries *Queries) error)
 }
 
 type EventFieldTx struct {
-	fieldType  string
-	fieldName  string
-	fieldValue string
+	Type  string
+	Name  string
+	Value string
 }
 
 type SubmitEventsTxParams struct {
-	blockchainId int64
-	blockNumber  int64
-	eventName    string
-	recorder     string
-	fields       []EventFieldTx
+	BlockchainId int64
+	BlockNumber  int64
+	EventName    string
+	Recorder     string
+	Fields       []EventFieldTx
 }
 
 type SubmitEventTxResult struct {
-	blockchain  Blockchains
-	event       Events
-	eventFields []EventFields
-	recorder    Users
+	Blockchain  Blockchains
+	Event       Events
+	EventFields []EventFields
+	Recorder    Users
 }
 
-// SubmitEventTx inserts event data to events and event_fields table
-/* Firstly, it checks if the recorder user is a scraper or not
-   Secondly, it checks if the blockchain exists or not. throws error if blockchain does not exist.
-   Thirdly, It checks event entry exists or not, then enter new event if it does not exist.
+// SubmitEventTx inserts Event data to events and event_fields table
+/* Firstly, it checks if the Recorder user is a scraper or not
+   Secondly, It checks Event entry exists or not, then enter new Event if it does not exist.
    After that, it inserts new event_fields in the event_fields table
 */
 func (store *Store) SubmitEventTx(ctx context.Context, arg SubmitEventsTxParams) (SubmitEventTxResult, error) {
@@ -74,50 +73,44 @@ func (store *Store) SubmitEventTx(ctx context.Context, arg SubmitEventsTxParams)
 	err := store.execTx(ctx, func(queries *Queries) error {
 		var err error
 
-		// check recorder validity
-		result.recorder, err = queries.GetUser(ctx, arg.recorder)
+		// check Recorder validity
+		result.Recorder, err = queries.GetUser(ctx, arg.Recorder)
 		if err != nil {
 			return err
 		}
-		if result.recorder.Role != util.UserRoleScraper {
+		if result.Recorder.Role != util.UserRoleScraper {
 			return &util.UserRoleNotPermitted{}
 		}
 
-		// check blockchain validity
-		result.blockchain, err = queries.GetBlockchain(ctx, arg.blockchainId)
-		if err != nil {
-			return err
-		}
-
-		// check event validity, insert new event if it does not exist
-		result.event, err = queries.GetEventByAllData(ctx, GetEventByAllDataParams{
-			BlockchainID: arg.blockchainId,
-			BlockNumber:  arg.blockNumber,
-			EventName:    arg.eventName,
+		// check Event validity, insert new Event if it does not exist
+		result.Event, err = queries.GetEventByAllData(ctx, GetEventByAllDataParams{
+			BlockchainID: arg.BlockchainId,
+			BlockNumber:  arg.BlockNumber,
+			EventName:    arg.EventName,
 		})
 		if err == sql.ErrNoRows {
-			result.event, err = queries.CreateEvent(ctx, CreateEventParams{
-				BlockchainID: arg.blockchainId,
-				BlockNumber:  arg.blockNumber,
-				EventName:    arg.eventName,
+			result.Event, err = queries.CreateEvent(ctx, CreateEventParams{
+				BlockchainID: arg.BlockchainId,
+				BlockNumber:  arg.BlockNumber,
+				EventName:    arg.EventName,
 			})
 		} else if err != nil {
 			return err
 		}
 
-		// insert event field
+		// insert Event field
 		var eventFieldList []EventFields
-		for _, field := range arg.fields {
+		for _, field := range arg.Fields {
 			var eventField EventFields
-			if util.IsValidEventFieldType(field.fieldType) == false {
+			if util.IsValidEventFieldType(field.Type) == false {
 				return &util.InvalidEventFieldType{}
 			}
 			eventField, err = queries.CreateEventField(ctx, CreateEventFieldParams{
-				EventID:  result.event.ID,
-				Name:     field.fieldName,
-				Type:     field.fieldType,
-				Value:    field.fieldValue,
-				Recorder: arg.recorder,
+				EventID:  result.Event.ID,
+				Name:     field.Name,
+				Type:     field.Type,
+				Value:    field.Value,
+				Recorder: arg.Recorder,
 			})
 			if err != nil {
 				return err
@@ -126,7 +119,7 @@ func (store *Store) SubmitEventTx(ctx context.Context, arg SubmitEventsTxParams)
 			eventFieldList = append(eventFieldList, eventField)
 		}
 
-		result.eventFields = eventFieldList
+		result.EventFields = eventFieldList
 
 		return nil
 	})

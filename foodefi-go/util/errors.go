@@ -17,3 +17,9 @@ type InvalidLoginRequest struct{}
 func (m *InvalidLoginRequest) Error() string {
 	return "invalid login request"
 }
+
+type InvalidBlockchainId struct{}
+
+func (m *InvalidBlockchainId) Error() string {
+	return "invalid blockchain id"
+}
