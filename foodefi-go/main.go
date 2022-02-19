@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	globalConfig, err := util.LoadGlobalConfig()
+	globalConfig, err := util.LoadGlobalConfig(".")
 	if err != nil {
 		log.Fatal("can not load global config", err)
 	}

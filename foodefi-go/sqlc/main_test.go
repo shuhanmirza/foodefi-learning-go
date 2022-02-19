@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"foodefi-go/util"
 	"log"
 	"os"
 	"testing"
@@ -12,14 +13,15 @@ import (
 var testQueries *Queries
 var testDb *sql.DB
 
-const (
-	dbDriver = "postgres"
-	dbSource = "postgresql://root:secret@localhost:5432/fd-Db?sslmode=disable"
-)
-
 func TestMain(m *testing.M) {
 	var err error
-	testDb, err = sql.Open(dbDriver, dbSource)
+
+	globalConfig, err := util.LoadGlobalConfig("../")
+	if err != nil {
+		log.Fatal("can not load global config", err)
+	}
+
+	testDb, err = sql.Open(globalConfig.DBDriver, globalConfig.DBSource)
 	if err != nil {
 		log.Fatal("can not connect to Db", err)
 	}

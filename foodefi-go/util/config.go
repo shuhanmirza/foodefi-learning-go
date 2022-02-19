@@ -8,8 +8,8 @@ type GlobalConfig struct {
 	FdAuthServerAddress string `mapstructure:"FD_AUTH_SERVER_ADDRESS"`
 }
 
-func LoadGlobalConfig() (config GlobalConfig, err error) {
-	viper.AddConfigPath(".")
+func LoadGlobalConfig(path string) (config GlobalConfig, err error) {
+	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 
