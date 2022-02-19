@@ -1,4 +1,4 @@
-package api
+package fd_auth
 
 import (
 	db "foodefi-go/sqlc"
