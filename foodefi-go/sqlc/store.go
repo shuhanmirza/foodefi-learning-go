@@ -7,23 +7,23 @@ import (
 	"foodefi-go/util"
 )
 
-//Store provides all functions to execute db queries and transactions
+//Store provides all functions to execute Db Queries and transactions
 type Store struct {
-	queries *Queries
-	db      *sql.DB
+	Queries *Queries
+	Db      *sql.DB
 }
 
 //NewStore creates a new Store
 func NewStore(db *sql.DB) *Store {
 	return &Store{
-		queries: New(db),
-		db:      db,
+		Queries: New(db),
+		Db:      db,
 	}
 }
 
 // execTx executes a function within a database transaction
 func (store *Store) execTx(ctx context.Context, fn func(queries *Queries) error) error {
-	tx, err := store.db.BeginTx(ctx, nil)
+	tx, err := store.Db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func (store *Store) SubmitEventTx(ctx context.Context, arg SubmitEventsTxParams)
 			return err
 		}
 
-		// check event validity, insert new event if does not exists
+		// check event validity, insert new event if it does not exist
 		result.event, err = queries.GetEventByAllData(ctx, GetEventByAllDataParams{
 			BlockchainID: arg.blockchainId,
 			BlockNumber:  arg.blockNumber,

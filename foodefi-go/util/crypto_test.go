@@ -22,3 +22,19 @@ func TestGetHash(t *testing.T) {
 		require.Equal(t, hex.EncodeToString(result), samples[i].out)
 	}
 }
+
+func TestCheckHash(t *testing.T) {
+	var match bool
+
+	match = CheckHash("hello", "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	require.Equal(t, true, match)
+
+	match = CheckHash("hello ", "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	require.Equal(t, false, match)
+
+	match = CheckHash(" hello", "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	require.Equal(t, false, match)
+
+	match = CheckHash("hello", "1cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	require.Equal(t, false, match)
+}

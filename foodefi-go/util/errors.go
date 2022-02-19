@@ -11,3 +11,9 @@ type UserRoleNotPermitted struct{}
 func (m *UserRoleNotPermitted) Error() string {
 	return "user role not permitted to do this action"
 }
+
+type InvalidLoginRequest struct{}
+
+func (m *InvalidLoginRequest) Error() string {
+	return "invalid login request"
+}
