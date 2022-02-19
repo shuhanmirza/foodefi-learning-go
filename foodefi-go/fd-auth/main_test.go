@@ -3,6 +3,7 @@ package fd_auth
 import (
 	"database/sql"
 	"foodefi-go/util"
+	"github.com/gin-gonic/gin"
 	"log"
 	"os"
 	"testing"
@@ -24,6 +25,8 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		log.Fatal("can not connect to Db", err)
 	}
+
+	gin.SetMode(gin.TestMode)
 
 	os.Exit(m.Run())
 }
