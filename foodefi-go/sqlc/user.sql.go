@@ -75,7 +75,7 @@ func (q *Queries) ListUsers(ctx context.Context) ([]Users, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Users
+	items := []Users{}
 	for rows.Next() {
 		var i Users
 		if err := rows.Scan(
@@ -110,7 +110,7 @@ func (q *Queries) ListUsersFilterRole(ctx context.Context, role string) ([]Users
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Users
+	items := []Users{}
 	for rows.Next() {
 		var i Users
 		if err := rows.Scan(

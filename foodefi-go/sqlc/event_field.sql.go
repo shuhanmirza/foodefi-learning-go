@@ -91,7 +91,7 @@ func (q *Queries) ListEventFields(ctx context.Context) ([]EventFields, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []EventFields
+	items := []EventFields{}
 	for rows.Next() {
 		var i EventFields
 		if err := rows.Scan(

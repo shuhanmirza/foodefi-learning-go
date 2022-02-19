@@ -57,7 +57,7 @@ func (q *Queries) ListBlockchains(ctx context.Context) ([]Blockchains, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Blockchains
+	items := []Blockchains{}
 	for rows.Next() {
 		var i Blockchains
 		if err := rows.Scan(&i.ID, &i.Name, &i.CreatedAt); err != nil {

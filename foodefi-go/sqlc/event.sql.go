@@ -102,7 +102,7 @@ func (q *Queries) ListEvents(ctx context.Context) ([]Events, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Events
+	items := []Events{}
 	for rows.Next() {
 		var i Events
 		if err := rows.Scan(
