@@ -23,3 +23,9 @@ type InvalidBlockchainId struct{}
 func (m *InvalidBlockchainId) Error() string {
 	return "invalid blockchain id"
 }
+
+type InvalidEvent struct{}
+
+func (m *InvalidEvent) Error() string {
+	return "invalid blockchain event"
+}

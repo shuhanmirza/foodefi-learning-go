@@ -13,10 +13,24 @@ from event_fields
 WHERE id = $1
 LIMIT 1;
 
+-- name: GetEventFieldByEventIdFieldName :one
+SELECT *
+from event_fields
+WHERE event_id = $1
+  and name = $2
+LIMIT 1;
+
 -- name: ListEventFields :many
 SELECT *
 FROM event_fields
 ORDER BY event_id;
+
+-- name: UpdateEventField :exec
+UPDATE event_fields
+SET value = $3
+WHERE event_id = $1
+  and name = $2
+RETURNING *;
 
 -- name: DeleteEventField :exec
 DELETE

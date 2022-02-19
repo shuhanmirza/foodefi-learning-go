@@ -57,6 +57,34 @@ func (q *Queries) DeleteEventField(ctx context.Context, id int64) error {
 	return err
 }
 
+const getEventFieldByEventIdFieldName = `-- name: GetEventFieldByEventIdFieldName :one
+SELECT id, event_id, name, type, value, recorder, created_at
+from event_fields
+WHERE event_id = $1
+  and name = $2
+LIMIT 1
+`
+
+type GetEventFieldByEventIdFieldNameParams struct {
+	EventID int64  `json:"event_id"`
+	Name    string `json:"name"`
+}
+
+func (q *Queries) GetEventFieldByEventIdFieldName(ctx context.Context, arg GetEventFieldByEventIdFieldNameParams) (EventFields, error) {
+	row := q.db.QueryRowContext(ctx, getEventFieldByEventIdFieldName, arg.EventID, arg.Name)
+	var i EventFields
+	err := row.Scan(
+		&i.ID,
+		&i.EventID,
+		&i.Name,
+		&i.Type,
+		&i.Value,
+		&i.Recorder,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const getEventFieldById = `-- name: GetEventFieldById :one
 SELECT id, event_id, name, type, value, recorder, created_at
 from event_fields
@@ -114,4 +142,23 @@ func (q *Queries) ListEventFields(ctx context.Context) ([]EventFields, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateEventField = `-- name: UpdateEventField :exec
+UPDATE event_fields
+SET value = $3
+WHERE event_id = $1
+  and name = $2
+RETURNING id, event_id, name, type, value, recorder, created_at
+`
+
+type UpdateEventFieldParams struct {
+	EventID int64  `json:"event_id"`
+	Name    string `json:"name"`
+	Value   string `json:"value"`
+}
+
+func (q *Queries) UpdateEventField(ctx context.Context, arg UpdateEventFieldParams) error {
+	_, err := q.db.ExecContext(ctx, updateEventField, arg.EventID, arg.Name, arg.Value)
+	return err
 }

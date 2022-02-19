@@ -1,7 +1,6 @@
 package fd_event_listener
 
 import (
-	"database/sql"
 	"fmt"
 	db "foodefi-go/sqlc"
 	"foodefi-go/util"
@@ -68,11 +67,12 @@ func (server *Server) submit(ctx *gin.Context) {
 		return
 	}
 	fmt.Println(txResult)
-	ctx.JSON(http.StatusOK, submitEventResponse{
+	ctx.JSON(http.StatusCreated, submitEventResponse{
 		Ok: "Okay",
 	})
 
 }
+
 func (server *Server) parseEventFieldTxFromSubmitEventRequest(request submitEventRequest) ([]db.EventFieldTx, error) {
 	var eventFieldTxList []db.EventFieldTx
 	for _, field := range request.Fields {
@@ -88,16 +88,4 @@ func (server *Server) parseEventFieldTxFromSubmitEventRequest(request submitEven
 	}
 
 	return eventFieldTxList, nil
-}
-func (server *Server) checkValidBlockchain(ctx *gin.Context, blockchainId int64) (found bool, err error) {
-	_, err = server.store.Queries.GetBlockchain(ctx, blockchainId)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			fmt.Println("blockchain id not found")
-			fmt.Println(err)
-			return false, nil
-		}
-		return false, err
-	}
-	return true, nil
 }

@@ -27,7 +27,7 @@ DELETE
 FROM users
 WHERE username = $1;
 
--- name: UpdateUserPassword :exec
+-- name: UpdateUserPassword :one
 UPDATE users
 SET password = $2
 WHERE username = $1

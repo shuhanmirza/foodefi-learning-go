@@ -17,6 +17,7 @@ func NewServer(store *db.Store) *Server {
 	router := gin.Default()
 
 	router.POST(PREFIX_PATH+"/submit", server.submit)
+	router.POST(PREFIX_PATH+"/update", server.update)
 
 	server.router = router
 

@@ -132,7 +132,7 @@ func (q *Queries) ListUsersFilterRole(ctx context.Context, role string) ([]Users
 	return items, nil
 }
 
-const updateUserPassword = `-- name: UpdateUserPassword :exec
+const updateUserPassword = `-- name: UpdateUserPassword :one
 UPDATE users
 SET password = $2
 WHERE username = $1
@@ -144,9 +144,16 @@ type UpdateUserPasswordParams struct {
 	Password string `json:"password"`
 }
 
-func (q *Queries) UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) error {
-	_, err := q.db.ExecContext(ctx, updateUserPassword, arg.Username, arg.Password)
-	return err
+func (q *Queries) UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) (Users, error) {
+	row := q.db.QueryRowContext(ctx, updateUserPassword, arg.Username, arg.Password)
+	var i Users
+	err := row.Scan(
+		&i.Username,
+		&i.Password,
+		&i.Role,
+		&i.CreatedAt,
+	)
+	return i, err
 }
 
 const updateUserRole = `-- name: UpdateUserRole :one
