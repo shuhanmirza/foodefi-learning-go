@@ -23,7 +23,7 @@ type submitEventResponse struct {
 	Ok string `json:"ok"`
 }
 
-func (server *Server) submit(ctx *gin.Context) {
+func (server *Server) submitEvent(ctx *gin.Context) {
 	var request submitEventRequest
 
 	err := ctx.ShouldBindJSON(&request)

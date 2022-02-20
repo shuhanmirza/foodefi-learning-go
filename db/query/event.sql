@@ -19,11 +19,6 @@ WHERE blockchain_id = $1
   and event_name = $3
 LIMIT 1;
 
--- name: ListEvents :many
-SELECT *
-FROM events
-ORDER BY blockchain_id;
-
 -- name: DeleteEvent :exec
 DELETE
 FROM events

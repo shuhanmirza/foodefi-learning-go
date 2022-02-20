@@ -89,37 +89,3 @@ func (q *Queries) GetEventById(ctx context.Context, id int64) (Events, error) {
 	)
 	return i, err
 }
-
-const listEvents = `-- name: ListEvents :many
-SELECT id, blockchain_id, block_number, event_name
-FROM events
-ORDER BY blockchain_id
-`
-
-func (q *Queries) ListEvents(ctx context.Context) ([]Events, error) {
-	rows, err := q.db.QueryContext(ctx, listEvents)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Events{}
-	for rows.Next() {
-		var i Events
-		if err := rows.Scan(
-			&i.ID,
-			&i.BlockchainID,
-			&i.BlockNumber,
-			&i.EventName,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}

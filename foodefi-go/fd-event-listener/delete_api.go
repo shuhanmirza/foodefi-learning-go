@@ -19,7 +19,7 @@ type deleteEventResponse struct {
 	Ok string `json:"ok"`
 }
 
-func (server *Server) delete(ctx *gin.Context) {
+func (server *Server) deleteEvent(ctx *gin.Context) {
 	var request deleteEventRequest
 
 	err := ctx.ShouldBindJSON(&request)

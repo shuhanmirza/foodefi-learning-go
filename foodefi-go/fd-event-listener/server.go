@@ -16,9 +16,10 @@ func NewServer(store *db.Store) *Server {
 	server := &Server{store: store}
 	router := gin.Default()
 
-	router.POST(PREFIX_PATH+"/submit", server.submit)
-	router.POST(PREFIX_PATH+"/update", server.update)
-	router.POST(PREFIX_PATH+"/delete", server.delete)
+	router.POST(PREFIX_PATH+"/submit", server.submitEvent)
+	router.POST(PREFIX_PATH+"/update", server.updateEvent)
+	router.POST(PREFIX_PATH+"/delete", server.deleteEvent)
+	router.POST(PREFIX_PATH+"/list", server.listEvent)
 
 	server.router = router
 

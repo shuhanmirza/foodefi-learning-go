@@ -24,7 +24,7 @@ type updateEventResponse struct {
 	Ok string `json:"ok"`
 }
 
-func (server *Server) update(ctx *gin.Context) {
+func (server *Server) updateEvent(ctx *gin.Context) {
 	var request updateEventRequest
 
 	err := ctx.ShouldBindJSON(&request)
