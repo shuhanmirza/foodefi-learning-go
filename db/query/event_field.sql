@@ -36,3 +36,14 @@ RETURNING *;
 DELETE
 FROM event_fields
 WHERE id = $1;
+
+-- name: DeleteEventFieldByEventIdFieldName :exec
+DELETE
+FROM event_fields
+WHERE event_id = $1
+  and name = $2;
+
+-- name: DeleteEventFieldByEventId :exec
+DELETE
+FROM event_fields
+WHERE event_id = $1;

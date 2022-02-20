@@ -57,6 +57,34 @@ func (q *Queries) DeleteEventField(ctx context.Context, id int64) error {
 	return err
 }
 
+const deleteEventFieldByEventId = `-- name: DeleteEventFieldByEventId :exec
+DELETE
+FROM event_fields
+WHERE event_id = $1
+`
+
+func (q *Queries) DeleteEventFieldByEventId(ctx context.Context, eventID int64) error {
+	_, err := q.db.ExecContext(ctx, deleteEventFieldByEventId, eventID)
+	return err
+}
+
+const deleteEventFieldByEventIdFieldName = `-- name: DeleteEventFieldByEventIdFieldName :exec
+DELETE
+FROM event_fields
+WHERE event_id = $1
+  and name = $2
+`
+
+type DeleteEventFieldByEventIdFieldNameParams struct {
+	EventID int64  `json:"event_id"`
+	Name    string `json:"name"`
+}
+
+func (q *Queries) DeleteEventFieldByEventIdFieldName(ctx context.Context, arg DeleteEventFieldByEventIdFieldNameParams) error {
+	_, err := q.db.ExecContext(ctx, deleteEventFieldByEventIdFieldName, arg.EventID, arg.Name)
+	return err
+}
+
 const getEventFieldByEventIdFieldName = `-- name: GetEventFieldByEventIdFieldName :one
 SELECT id, event_id, name, type, value, recorder, created_at
 from event_fields

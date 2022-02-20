@@ -18,6 +18,7 @@ func NewServer(store *db.Store) *Server {
 
 	router.POST(PREFIX_PATH+"/submit", server.submit)
 	router.POST(PREFIX_PATH+"/update", server.update)
+	router.POST(PREFIX_PATH+"/delete", server.delete)
 
 	server.router = router
 
