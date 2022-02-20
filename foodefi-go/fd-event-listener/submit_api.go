@@ -57,7 +57,7 @@ func (server *Server) submitEvent(ctx *gin.Context) {
 		BlockchainId: request.BlockchainId,
 		BlockNumber:  request.BlockNumber,
 		EventName:    request.EventName,
-		Recorder:     "shuhan_scraper", // TO DO: implement jwt token
+		Recorder:     "shuhan_scraper", //TODO: implement jwt token
 		Fields:       eventFieldTxList,
 	})
 	if err != nil {
