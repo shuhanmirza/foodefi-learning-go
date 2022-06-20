@@ -1,4 +1,4 @@
-# foodefi-alpine
+# foodefi-learning-go
 
 ## Story: Event API
 
